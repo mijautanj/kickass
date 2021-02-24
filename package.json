@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/mijautanj/kickass/issues"
   },
-  "homepage": "https://github.com/mijautanj/kickass#readme"
+  "homepage": "https://github.com/mijautanj/kickass#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
