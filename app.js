@@ -1,5 +1,9 @@
 require("dotenv").config();
 
+const { Client } = require("pg");
+const client = new Client();
+client.connect();
+
 const http = require("http");
 
 const hostname = "0.0.0.0";
