@@ -3,7 +3,8 @@ require("dotenv").config();
 const { Client } = require("pg");
 const client = new Client();
 client.connect();
-
+console.log("connected");
+/*
 const http = require("http");
 
 const hostname = "0.0.0.0";
@@ -18,3 +19,4 @@ const server = http.createServer((req, res) => {
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+*/
