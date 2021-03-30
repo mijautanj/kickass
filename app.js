@@ -1,14 +1,16 @@
 require("dotenv").config();
 
-const { Client } = require("pg");
-const client = new Client();
-const database = client.connect();
-console.log("connected");
-
 const http = require("http");
 
 const hostname = "0.0.0.0";
 const port = process.env.PORT;
+
+const dbURL = process.env.DATABASE_URL;
+
+const { Client } = require("pg");
+const client = new Client({ connectionString: dbURL });
+client.connect();
+console.log("connected");
 
 const server = http.createServer(async (req, res) => {
   if (req.url === "/exercises") {
