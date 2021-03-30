@@ -8,7 +8,12 @@ const port = process.env.PORT;
 const dbURL = process.env.DATABASE_URL;
 
 const { Client } = require("pg");
-const client = new Client({ connectionString: dbURL });
+const client = new Client({
+  connectionString: dbURL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 client.connect();
 console.log("connected");
 
