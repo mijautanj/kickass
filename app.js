@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const { log } = require("console");
 const http = require("http");
 
 const hostname = "0.0.0.0";
@@ -19,12 +20,18 @@ console.log("connected");
 
 const server = http.createServer(async (req, res) => {
   if (req.url === "/exercises") {
-    const result = await client.query("select * from kickass.exercises;");
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.write(JSON.stringify(result.rows));
-    res.end();
-    return;
+    if (req.method === "GET") {
+      const result = await client.query("select * from kickass.exercises;");
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.write(JSON.stringify(result.rows));
+      res.end();
+      return;
+    }
+    if (req.method === "POST") {
+      res.end("WOHIHIHII");
+      return;
+    }
   }
 
   res.statusCode = 200;
