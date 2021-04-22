@@ -1,10 +1,6 @@
 require("dotenv").config();
-
-const http = require("http");
-
-const hostname = "0.0.0.0";
+const express = require("express");
 const port = process.env.PORT;
-
 const dbURL = process.env.DATABASE_URL;
 
 const { Client } = require("pg");
@@ -17,21 +13,32 @@ const client = new Client({
 client.connect();
 console.log("connected");
 
-const server = http.createServer(async (req, res) => {
-  if (req.url === "/exercises") {
-    const result = await client.query("select * from kickass.exercises;");
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.write(JSON.stringify(result.rows));
-    res.end();
-    return;
-  }
+const app = express();
 
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/plain");
+app.use(express.json());
+
+app.get("/", (req, res) => {
   res.end("hello there");
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.get("/exercises", async (req, res) => {
+  const result = await client.query("select * from kickass.exercises;");
+  res.send(result.rows);
+});
+
+app.post("/exercises", async (req, res) => {
+  const exercise = req.body.exercise;
+
+  if (exercise !== undefined) {
+    const result = await client.query(
+      `insert into kickass.exercises (name) values ('${exercise}') ON CONFLICT DO NOTHING`
+    );
+    res.send(req.body.exercise);
+  }
+
+  res.send("ERROR: please provide an exercise");
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
